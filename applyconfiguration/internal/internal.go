@@ -829,6 +829,15 @@ var schemaYAML = typed.YAMLObject(`types:
     - name: pullRequest
       type:
         namedType: com.github.argoproj-labs.gitops-promoter.api.v1alpha1.PullRequestCommonStatus
+- name: com.github.argoproj-labs.gitops-promoter.api.v1alpha1.ExpectedResult
+  map:
+    fields:
+    - name: expression
+      type:
+        scalar: string
+    - name: key
+      type:
+        scalar: string
 - name: com.github.argoproj-labs.gitops-promoter.api.v1alpha1.ExponentialFailure
   map:
     fields:
@@ -1205,6 +1214,15 @@ var schemaYAML = typed.YAMLObject(`types:
       type:
         scalar: string
     - name: subject
+      type:
+        scalar: string
+- name: com.github.argoproj-labs.gitops-promoter.api.v1alpha1.IndividualExpressionResult
+  map:
+    fields:
+    - name: expressionResult
+      type:
+        scalar: boolean
+    - name: key
       type:
         scalar: string
 - name: com.github.argoproj-labs.gitops-promoter.api.v1alpha1.ModeSpec
@@ -1841,12 +1859,130 @@ var schemaYAML = typed.YAMLObject(`types:
     - name: secretRef
       type:
         namedType: io.k8s.api.core.v1.LocalObjectReference
+- name: com.github.argoproj-labs.gitops-promoter.api.v1alpha1.TektonCommitStatus
+  map:
+    fields:
+    - name: apiVersion
+      type:
+        scalar: string
+    - name: kind
+      type:
+        scalar: string
+    - name: metadata
+      type:
+        namedType: io.k8s.apimachinery.pkg.apis.meta.v1.ObjectMeta
+    - name: spec
+      type:
+        namedType: com.github.argoproj-labs.gitops-promoter.api.v1alpha1.TektonCommitStatusSpec
+    - name: status
+      type:
+        namedType: com.github.argoproj-labs.gitops-promoter.api.v1alpha1.TektonCommitStatusStatus
 - name: com.github.argoproj-labs.gitops-promoter.api.v1alpha1.TektonCommitStatusConfiguration
   map:
     fields:
     - name: workQueue
       type:
         namedType: com.github.argoproj-labs.gitops-promoter.api.v1alpha1.WorkQueue
+- name: com.github.argoproj-labs.gitops-promoter.api.v1alpha1.TektonCommitStatusEnvironmentStatus
+  map:
+    fields:
+    - name: branch
+      type:
+        scalar: string
+    - name: expressionResult
+      type:
+        scalar: boolean
+    - name: individualExpressionResults
+      type:
+        list:
+          elementType:
+            namedType: com.github.argoproj-labs.gitops-promoter.api.v1alpha1.IndividualExpressionResult
+          elementRelationship: atomic
+    - name: phase
+      type:
+        namedType: com.github.argoproj-labs.gitops-promoter.api.v1alpha1.CommitStatusPhase
+    - name: targetedSha
+      type:
+        scalar: string
+    - name: tektonRunName
+      type:
+        scalar: string
+    - name: tektonRunPhase
+      type:
+        scalar: string
+- name: com.github.argoproj-labs.gitops-promoter.api.v1alpha1.TektonCommitStatusSpec
+  map:
+    fields:
+    - name: expectedResults
+      type:
+        list:
+          elementType:
+            namedType: com.github.argoproj-labs.gitops-promoter.api.v1alpha1.ExpectedResult
+          elementRelationship: atomic
+    - name: expression
+      type:
+        scalar: string
+    - name: key
+      type:
+        scalar: string
+      default: tekton-result
+    - name: promotionStrategyRef
+      type:
+        namedType: com.github.argoproj-labs.gitops-promoter.api.v1alpha1.ObjectReference
+    - name: pruneRun
+      type:
+        scalar: boolean
+      default: false
+    - name: target
+      type:
+        scalar: string
+      default: proposed
+    - name: tektonResourceRef
+      type:
+        namedType: com.github.argoproj-labs.gitops-promoter.api.v1alpha1.TektonResourceRef
+    - name: url
+      type:
+        namedType: com.github.argoproj-labs.gitops-promoter.api.v1alpha1.URLConfig
+- name: com.github.argoproj-labs.gitops-promoter.api.v1alpha1.TektonCommitStatusStatus
+  map:
+    fields:
+    - name: conditions
+      type:
+        list:
+          elementType:
+            namedType: io.k8s.apimachinery.pkg.apis.meta.v1.Condition
+          elementRelationship: associative
+          keys:
+          - type
+    - name: environments
+      type:
+        list:
+          elementType:
+            namedType: com.github.argoproj-labs.gitops-promoter.api.v1alpha1.TektonCommitStatusEnvironmentStatus
+          elementRelationship: atomic
+    - name: instanceID
+      type:
+        scalar: string
+    - name: observedGeneration
+      type:
+        scalar: numeric
+- name: com.github.argoproj-labs.gitops-promoter.api.v1alpha1.TektonResourceRef
+  map:
+    fields:
+    - name: kind
+      type:
+        scalar: string
+    - name: name
+      type:
+        scalar: string
+    - name: parameters
+      type:
+        map:
+          elementType:
+            scalar: string
+    - name: serviceAccount
+      type:
+        scalar: string
 - name: com.github.argoproj-labs.gitops-promoter.api.v1alpha1.TimedCommitStatus
   map:
     fields:
